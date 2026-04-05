@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '4.0.5'
+	id 'org.springframework.boot' version '4.0.2'
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -26,8 +26,25 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	// Springdoc voor Spring Boot 4 / Java 25
+	// Verwijder de 'exclude', want die sloopt de metadata-lezer
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.named('bootJar') {
+	layered {
+		enabled = true
+	}
+
+	// Forceer een schone build door de task na 'clean' te laten draaien
+	mustRunAfter tasks.named('clean')
+
+	// Zorg dat de naam consistent is
+	archiveFileName = 'config-tree-sample.jar'
+
 }

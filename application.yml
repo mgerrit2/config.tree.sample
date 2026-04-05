@@ -1,0 +1,11 @@
+services:
+  config-tree-sample-webservice:
+    build: .
+    container_name: config-tree-sample-webservice
+    volumes:
+      - ../security/config.tree.sample:/etc/config/secrets:ro
+    environment:
+      - SPRING_CONFIG_IMPORT=configtree:/etc/config/secrets/
+    ports:
+      - "8080:8080"
+    restart: always
